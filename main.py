@@ -19,6 +19,7 @@ Environment variables yang dibutuhkan:
 from __future__ import annotations
 
 import argparse
+import datetime
 import sys
 from pathlib import Path
 
@@ -53,9 +54,17 @@ def run_once() -> None:
         print(f"      Gagal memanggil Gemini API: {exc}", file=sys.stderr)
         sys.exit(1)
 
-    print("[4/5] Menyimpan hasil...")
+    print("[4/5] Menambahkan entri baru ke jurnal...")
     output_path = Path(OUTPUT_FILE)
-    output_path.write_text(result, encoding="utf-8")
+    timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
+    entry = f"\n\n---\n\n<!-- Run: {timestamp} -->\n\n{result}\n"
+
+    if output_path.exists():
+        with output_path.open("a", encoding="utf-8") as f:
+            f.write(entry)
+    else:
+        # File belum ada -> tulis tanpa separator/awalan kosong di depan
+        output_path.write_text(f"<!-- Run: {timestamp} -->\n\n{result}\n", encoding="utf-8")
 
     print("[5/5] Menyimpan state (biar diff yang sama tidak dilaporkan ulang)...")
     new_state = dict(prev_state)
@@ -66,7 +75,7 @@ def run_once() -> None:
     print("\n" + "=" * 60)
     print(result)
     print("=" * 60)
-    print(f"\nTersimpan di: {output_path.resolve()}")
+    print(f"\nEntri baru ditambahkan ke: {output_path.resolve()}")
 
 
 def run_scheduled() -> None:
