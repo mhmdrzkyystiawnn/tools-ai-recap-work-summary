@@ -1,3 +1,4 @@
 .env
 __pycache__/
 jurnal-hari-ini.md
+.pkl_jurnal_state.json
