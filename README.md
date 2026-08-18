@@ -1,7 +1,7 @@
 # PKL Jurnal Generator
 
 Script Python yang merangkum aktivitas coding harian dari beberapa project git
-menjadi draf laporan jurnal PKL, menggunakan Gemini API (`gemini-2.5-flash`).
+menjadi draf laporan jurnal PKL, menggunakan Gemini API (`gemini-3.5-flash`).
 
 ## Alur Kerja
 
@@ -28,8 +28,9 @@ menjadi draf laporan jurnal PKL, menggunakan Gemini API (`gemini-2.5-flash`).
    └── 2026-09-september/
        └── minggu-1.md
    ```
-   Tiap file minggu berisi beberapa hari, tiap hari bisa berisi beberapa run
-   (kalau script dijalankan lebih dari sekali di hari yang sama).
+   Tiap file minggu berisi beberapa hari. Kalau script dijalankan lebih dari
+   sekali di hari yang sama, run berikutnya **tidak** memanggil Gemini lagi
+   (lihat bagian "Skip Generate Duplikat" di bawah).
 
 ## Instalasi
 
@@ -68,6 +69,26 @@ Mode terjadwal built-in (proses tetap hidup, jalan tiap jam 17:00):
 ```bash
 python main.py --schedule
 ```
+
+## Skip Generate Duplikat & `--force`
+
+Kalau hari ini **sudah ada** entri jurnal (ditandai `<!-- Day: yyyy-mm-dd -->`),
+menjalankan `python main.py` lagi **tidak** memanggil Gemini — hemat API & cepat.
+Sebaliknya, terminal hanya menampilkan:
+
+```
+Sistem telah mencatat progress Anda hari ini.
+Informasi: jika Anda ingin mengecek hasil kerja Anda hari ini lagi, jalankan py main.py --force
+```
+
+- Run duplikat **pertama** dalam sehari menulis catatan `> **Sudah dicek** ...`
+  sekali di file jurnal (ditandai `<!-- Skip: yyyy-mm-dd -->`); run berikutnya
+  hanya print di terminal tanpa mengubah file.
+- Kalau kamu lanjut coding dan ingin membuat entri baru di hari yang sama:
+  ```bash
+  python main.py --force
+  ```
+  `--force` melewati pengecekan dan selalu menambahkan entri baru hasil Gemini.
 
 ## Menjadwalkan Otomatis Tiap Jam 5 Sore
 
