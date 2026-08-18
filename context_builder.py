@@ -16,7 +16,7 @@ def build_project_section(data: ProjectGitData) -> str:
 
     parts = [f"## {data.name}"]
 
-    if data.todays_commits.strip():
+    if (data.todays_commits or "").strip():
         parts.append("### Commit hari ini (git log)")
         parts.append(data.todays_commits.strip())
     else:
@@ -25,7 +25,7 @@ def build_project_section(data: ProjectGitData) -> str:
     if data.changed_files:
         parts.append("### File dengan perubahan baru (belum dicommit, sejak run terakhir)")
         parts.append("\n".join(f"- {f}" for f in data.changed_files))
-        if data.selective_diff.strip():
+        if (data.selective_diff or "").strip():
             parts.append(data.selective_diff.strip())
     else:
         parts.append("### File dengan perubahan baru (belum dicommit)\n(tidak ada perubahan baru sejak run terakhir)")

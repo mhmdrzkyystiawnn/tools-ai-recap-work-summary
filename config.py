@@ -4,6 +4,7 @@ Edit bagian PROJECTS dan GIT_USERNAME sesuai kebutuhanmu.
 """
 
 import os
+from pathlib import Path
 
 from dotenv import load_dotenv
 
@@ -21,7 +22,6 @@ load_dotenv()
 PROJECTS = [
     {"name": "Project Core Talos", "path": "C:/pkl/Company-Projects/project-core-talos"}
 ]
-
 # Username git kamu (harus SAMA PERSIS dengan `git config user.name` di tiap repo,
 # atau bisa juga pakai email lewat --author jika author.name berbeda-beda).
 GIT_USERNAME = os.environ.get("GIT_USERNAME", "USERNAME_AKU")
@@ -66,6 +66,7 @@ CODE_EXTENSIONS = {
     ".css", ".scss",
     ".html",
     ".sql",
+    ".prisma"
 }
 
 # ---------------------------------------------------------------------------
@@ -77,7 +78,7 @@ MAX_CONTEXT_CHARS = 12_000  # batas total karakter konteks yang dikirim ke Gemin
 # 7. Gemini API
 # ---------------------------------------------------------------------------
 # Catatan: "gemini-2.5-flash" sudah tidak tersedia untuk API key baru (dideprecate
-# lebih cepat dari jadwal resmi Google). Pakai alias "gemini-flash-latest" yang
+# lebih cepat dari jadwal resmi Google). Pakai alias "gemini-3.5-flash" yang
 # otomatis mengarah ke rilis Flash terbaru, dan diberi notice 2 minggu sebelum
 # ada breaking change — jadi lebih tahan lama dibanding pin ke versi spesifik.
 GEMINI_MODEL = "gemini-3.5-flash"
@@ -86,4 +87,6 @@ GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")
 # ---------------------------------------------------------------------------
 # 8. Output
 # ---------------------------------------------------------------------------
-OUTPUT_FILE = "jurnal-hari-ini.md"
+# Struktur: <JOURNAL_BASE_DIR>/<tahun>-<bulan>-<nama_bulan>/minggu-<N>.md
+# Contoh: jurnal-pkl/2026-08-agustus/minggu-3.md
+JOURNAL_BASE_DIR = Path(__file__).parent / "jurnal-pkl"

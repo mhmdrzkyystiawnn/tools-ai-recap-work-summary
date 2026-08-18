@@ -40,11 +40,13 @@ def _run_git(path: str, args: list[str]) -> tuple[bool, str]:
             cwd=path,
             capture_output=True,
             text=True,
+            encoding="utf-8",
+            errors="replace",
             timeout=30,
         )
         if result.returncode != 0:
-            return False, result.stderr.strip()
-        return True, result.stdout
+            return False, (result.stderr or "").strip()
+        return True, result.stdout or ""
     except (subprocess.TimeoutExpired, FileNotFoundError) as exc:
         return False, str(exc)
 

@@ -1,7 +1,7 @@
 # PKL Jurnal Generator
 
 Script Python yang merangkum aktivitas coding harian dari beberapa project git
-menjadi draf laporan jurnal PKL, menggunakan Gemini API (`gemini-3.5-flash`).
+menjadi draf laporan jurnal PKL, menggunakan Gemini API (`gemini-2.5-flash`).
 
 ## Alur Kerja
 
@@ -16,7 +16,20 @@ menjadi draf laporan jurnal PKL, menggunakan Gemini API (`gemini-3.5-flash`).
 5. **Token Guard**: gabungkan Step 0 + Step 2, potong ke maksimal 12.000
    karakter (bisa diubah di `config.py`).
 6. **AI Summarizer**: kirim ke Gemini API untuk dirangkum jadi laporan.
-7. **Output**: ditampilkan di terminal & disimpan ke `jurnal-hari-ini.md`.
+7. **Output**: ditampilkan di terminal & ditambahkan (append) ke file jurnal
+   mingguan, terorganisir per bulan:
+   ```
+   jurnal-pkl/
+   ├── 2026-08-agustus/
+   │   ├── minggu-1.md   (tanggal 1-7)
+   │   ├── minggu-2.md   (tanggal 8-14)
+   │   ├── minggu-3.md   (tanggal 15-21)
+   │   └── minggu-4.md   (tanggal 22-28)
+   └── 2026-09-september/
+       └── minggu-1.md
+   ```
+   Tiap file minggu berisi beberapa hari, tiap hari bisa berisi beberapa run
+   (kalau script dijalankan lebih dari sekali di hari yang sama).
 
 ## Instalasi
 
@@ -87,6 +100,7 @@ pkl-jurnal-generator/
 ├── context_builder.py    # Gabungkan + token guard/truncate
 ├── gemini_summarizer.py  # Panggil Gemini API (google-genai SDK)
 ├── state_store.py        # Simpan hash diff antar run (.pkl_state.json)
+├── output_paths.py       # Hitung folder bulan / file minggu dari tanggal
 ├── main.py               # Orkestrasi + CLI + mode terjadwal
 ├── requirements.txt
 └── .env.example
