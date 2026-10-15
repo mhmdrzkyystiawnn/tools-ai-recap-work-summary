@@ -81,7 +81,7 @@ MAX_CONTEXT_CHARS = 12_000  # batas total karakter konteks yang dikirim ke Gemin
 # lebih cepat dari jadwal resmi Google). Pakai alias "gemini-3.5-flash" yang
 # otomatis mengarah ke rilis Flash terbaru, dan diberi notice 2 minggu sebelum
 # ada breaking change — jadi lebih tahan lama dibanding pin ke versi spesifik.
-GEMINI_MODEL = "gemini-3.5-flash"
+GEMINI_MODEL = "gemini-3.5-flash-lite"
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")
 
 # ---------------------------------------------------------------------------
